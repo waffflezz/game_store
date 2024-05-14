@@ -1,0 +1,483 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel OpenApi Demo Documentation",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "admin@admin.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/api/game": {
+            "get": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Get all games",
+                "description": "Returns a list of all games.",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Create a new game",
+                "description": "Creates a new game record.",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "The Witcher 3: Wild Hunt"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "An action role-playing game."
+                                    },
+                                    "main_image": {
+                                        "description": "The main image file of the game.",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "genre_ids[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "platform_ids[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 59.99
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Game created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/game/{game}": {
+            "get": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Get a specific game",
+                "description": "Returns a specific game by ID.",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "game",
+                        "in": "path",
+                        "description": "ID of the game to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Delete a game",
+                "description": "Deletes an existing game record.",
+                "operationId": "destroy",
+                "parameters": [
+                    {
+                        "name": "game",
+                        "in": "path",
+                        "description": "ID of the game to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Game deleted successfully"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Update a game",
+                "description": "Updates a game record.",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "game",
+                        "in": "path",
+                        "description": "ID of the game to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "The Witcher 3: Wild Hunt"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "An action role-playing game."
+                                    },
+                                    "main_image": {
+                                        "description": "The main image file of the game.",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "genre_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "platform_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 59.99
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Game updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreGameRequest": {
+                "title": "Store Game Request",
+                "description": "Request schema for storing a new game",
+                "required": [
+                    "title",
+                    "description",
+                    "main_image",
+                    "platform_ids",
+                    "price"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "The Witcher 3: Wild Hunt"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "An action role-playing game."
+                    },
+                    "main_image": {
+                        "description": "Image file of the game.",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "genre_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2
+                        ]
+                    },
+                    "platform_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 59.99
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateGameRequest": {
+                "title": "Update Game Request",
+                "description": "Request schema for updating an existing game",
+                "required": [
+                    "title",
+                    "description",
+                    "platform_ids",
+                    "price"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Updated Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Updated description."
+                    },
+                    "main_image": {
+                        "description": "Updated image file of the game.",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "genre_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2
+                        ]
+                    },
+                    "platform_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 49.99
+                    }
+                },
+                "type": "object"
+            },
+            "GameCollection": {
+                "title": "Game Collection",
+                "description": "Collection of Game resources",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GameResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "GameResource": {
+                "title": "Game Resource",
+                "description": "Resource representing a Game",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "The Witcher 3: Wild Hunt"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "An action role-playing game."
+                    },
+                    "main_image": {
+                        "type": "string",
+                        "example": "http://example.com/images/witcher.jpg"
+                    },
+                    "genre_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2
+                        ]
+                    },
+                    "platform_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 59.99
+                    }
+                },
+                "type": "object"
+            },
+            "Game": {
+                "title": "Game",
+                "description": "Game model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "The Witcher 3: Wild Hunt"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "An action role-playing game."
+                    },
+                    "main_image": {
+                        "type": "string",
+                        "example": "http://example.com/images/witcher.jpg"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Genre"
+                        }
+                    },
+                    "platforms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Platform"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Genre": {
+                "title": "Genre",
+                "description": "Genre model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Action"
+                    }
+                },
+                "type": "object"
+            },
+            "Platform": {
+                "title": "Platform",
+                "description": "Platform model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "PlayStation 5"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Best Game Store",
+            "description": "API Endpoints of Projects"
+        }
+    ]
+}
